@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.platform           = Gem::Platform::RUBY
   s.files              = Dir.glob("lib/**/*") + %w[LICENSE README.rdoc]
 
-  s.add_dependency 'yajl-ruby',        '~> 0.7.6'
-  s.add_dependency 'em-http-request',  '~> 0.2.10'
-  s.add_dependency 'ruby-hmac',        '~> 0.4.0'
+  s.add_dependency 'em-http-request', '~> 0.3.0'
+  s.add_dependency 'multi_json',      '~> 0.0.5'
+  s.add_dependency 'ruby-hmac',       '~> 0.4.0'
 end

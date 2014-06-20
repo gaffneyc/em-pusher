@@ -1,5 +1,5 @@
-require 'yajl'
 require 'em-http'
+require 'multi_json'
 require 'hmac-sha2'
 require 'digest/md5'
 
@@ -24,10 +24,10 @@ class EventMachine::Pusher < EventMachine::HttpRequest
     @auth_key    = config[:auth_key]
     @auth_secret = config[:auth_secret]
     @channel     = config[:channel]
-    
+
     super("http://api.pusherapp.com/apps/#{@app_id}/channels/#{@channel}/events")
   end
-  
+
   # Trigger +event+ on the client side with the given name. The +data+ parameter
   # is converted to JSON and parsed on the other end.
   #
@@ -43,15 +43,15 @@ class EventMachine::Pusher < EventMachine::HttpRequest
   #   end
   #
   def trigger(event, data)
-    body         = Yajl::Encoder.encode(data)
+    body         = MultiJson.encode(data)
     digest       = Digest::MD5.hexdigest(body)
     timestamp    = Time.now.to_i
-  
+
     signature =
       "POST\n/apps/#{@app_id}/channels/#{@channel}/events\nauth_key=#{@auth_key}&" +
       "auth_timestamp=#{timestamp}&auth_version=#{AUTH_VERSION}&" +
       "body_md5=#{digest}&name=#{event}"
-  
+
     self.post(
       :query => {
         'auth_key'       => @auth_key,
